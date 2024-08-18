@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .display {
+            height: 50px;
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 24px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .buttons button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons button:hover {
+            background-color: #ddd;
+        }
+
+        .buttons .equal {
+            grid-column: span 4;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .buttons .clear {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+        <button class="clear">AC</button>
+        <button>%</button>
+        <button>^2</button>
+        <button>/</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>*</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>-</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>+</button>
+        <button>0</button>
+        <button>.</button>
+        <button class="equal">=</button>
+    </div>
+</div>
+
+<!-- JavaScript for Calculator Logic -->
+<script>
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('button');
+    let currentInput = '';
+    let operator = '';
+    let previousInput = '';
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.textContent;
+
+            if (value === 'AC') {
+                currentInput = '';
+                previousInput = '';
+                operator = '';
+                display.textContent = '0';
+            } else if (value === '=') {
+                calculate();
+            } else if (value === '+' || value === '-' || value === '*' || value === '/' || value === '%') {
+                operator = value;
+                previousInput = currentInput;
+                currentInput = '';
+            } else if (value === '^2') {
+                currentInput = (parseFloat(currentInput) ** 2).toString();
+                display.textContent = currentInput;
+            } else {
+                currentInput += value;
+                display.textContent = currentInput;
+            }
+        });
+    });
+
+    function calculate() {
+        let result;
+        const previous = parseFloat(previousInput);
+        const current = parseFloat(currentInput);
+
+        switch (operator) {
+            case '+':
+                result = previous + current;
+                break;
+            case '-':
+                result = previous - current;
+                break;
+            case '*':
+                result = previous * current;
+                break;
+            case '/':
+                result = previous / current;
+                break;
+            case '%':
+                result = previous % current;
+                break;
+            default:
+                return;
+        }
+
+        currentInput = result.toString();
+        operator = '';
+        previousInput = '';
+        display.textContent = currentInput;
+    }
+</script>
+
+</body>
+</html>
